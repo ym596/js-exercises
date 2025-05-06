@@ -92,18 +92,46 @@
             console.log("DATA:", data)
 
             console.log("---------------------")
-            console.log("PART 1...")
+console.log("PART 1...")
+
+// A. Stock symbol is already set
+console.log("SYMBOL:", symbol)
+
+// B. Request URL is already set
+console.log("REQUEST URL:", requestUrl)
+
+// C. Fetched stock data is already stored in "data"
+
+// D. Display the number of rows (days of data)
+console.log("Number of Days:", data.length)
+
+// E. Find earliest day (last row in file)
+var earliest = data[data.length - 1]
+var earliestDate = earliest.timestamp
+var earliestPrice = parseFloat(earliest.adjusted_close)
+console.log("Earliest Date:", earliestDate)
+console.log("Earliest Adjusted Close:", formatUSD(earliestPrice))
+
+// F. Find latest day (first row in file)
+var latest = data[0]
+var latestDate = latest.timestamp
+var latestPrice = parseFloat(latest.adjusted_close)
+console.log("Latest Date:", latestDate)
+console.log("Latest Adjusted Close:", formatUSD(latestPrice))
+
+// G. Calculate percent change
+var pctChange = (latestPrice - earliestPrice) / earliestPrice
+console.log("Percent Change:", formatPct(pctChange))
 
 
+console.log("---------------------")
+console.log("PART 2...")
 
-
-
-            console.log("---------------------")
-            console.log("PART 2...")
-
-
-
-
+// Update HTML page with the results
+document.getElementById("display-symbol").innerText = symbol
+document.getElementById("display-earliest").innerText = `${earliestDate} (${formatUSD(earliestPrice)})`
+document.getElementById("display-latest").innerText = `${latestDate} (${formatUSD(latestPrice)})`
+document.getElementById("display-pct-change").innerText = formatPct(pctChange)
 
 
             }).catch(function(error) {
