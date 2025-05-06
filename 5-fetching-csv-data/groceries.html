@@ -69,41 +69,80 @@
 
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script type="text/javascript">
-
         function formatUSD(price) {
             return `$${price.toFixed(2)}`
         }
-
+    
         var requestUrl = "https://raw.githubusercontent.com/prof-rossetti/intro-to-python/main/data/products.csv"
-
+    
         d3.csv(requestUrl).then(function(data) {
             console.log("DATA:", data)
             var products = data
-
+    
             console.log("---------------------")
             console.log("PART 1...")
-
-
-
-
-
-
+    
+            // A. Number of products
+            console.log("Number of products:", products.length)
+    
+            // B. Display name and price of each
+            products.forEach(function(product) {
+                var price = parseFloat(product.price)
+                console.log(`${product.name}: ${formatUSD(price)}`)
+            })
+    
+            // D. Unique departments
+            var departments = []
+            products.forEach(function(product) {
+                var dept = product.department
+                if (!departments.includes(dept)) {
+                    departments.push(dept)
+                }
+            })
+    
+            // E. Number of unique departments
+            console.log("Number of unique departments:", departments.length)
+    
+            // F. Uppercase department names
+            departments.forEach(function(dept) {
+                console.log(dept.toUpperCase())
+            })
+    
+            // G. Filter for beverages
+            var beverages = products.filter(function(product) {
+                return product.department.toLowerCase() === "beverages"
+            })
+    
+            // H. Number of beverages
+            console.log("Number of beverage products:", beverages.length)
+    
+            // I. Average price of beverages
+            var totalBeveragePrice = beverages.reduce(function(sum, item) {
+                return sum + parseFloat(item.price)
+            }, 0)
+            var avgBeveragePrice = totalBeveragePrice / beverages.length
+            console.log("Average beverage price:", formatUSD(avgBeveragePrice))
+    
+    
             console.log("---------------------")
             console.log("PART 2...")
-
-
-
-
-
-
-
-
-
-
-            }).catch(function(error) {
-                console.error("ERROR:", error)
+    
+            // A. Sort by name
+            var sortedProducts = [...products].sort(function(a, b) {
+                return a.name.localeCompare(b.name)
+            })
+    
+            // B. Display on page
+            var ul = document.getElementById("display-groceries")
+            sortedProducts.forEach(function(product) {
+                var li = document.createElement("li")
+                li.textContent = `${product.name}: ${formatUSD(parseFloat(product.price))}`
+                ul.appendChild(li)
+            })
+    
+        }).catch(function(error) {
+            console.error("ERROR:", error)
         })
-
     </script>
 </body>
 </html>
