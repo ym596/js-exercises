@@ -37,7 +37,6 @@
 
 
     <script type="text/javascript">
-
         var products = [
             {
                 "name": "Textbook",
@@ -57,22 +56,60 @@
                 "price": 4.99,
                 "imageURL": "https://picsum.photos/id/1080/360/200"
             }
-        ]
-
+        ];
+    
         console.log("---------------------")
         console.log("PART 1...")
-
-
-
-
-
-
+    
+        // A. Display total number of products
+        console.log("Total number of products:", products.length);
+    
+        // B. Loop through each product and display name and price
+        products.forEach(product => {
+            console.log(`${product.name}: $${product.price}`);
+        });
+    
+        // C. Filter products under $50
+        const matchingProducts = products.filter(product => product.price < 50);
+        console.log("Matching Products (under $50):", matchingProducts);
+    
+        // D. Display number of matching products
+        console.log("Number of matching products:", matchingProducts.length);
+    
         console.log("---------------------")
         console.log("PART 2...")
-
-
-
-
+    
+        // Get reference to the container div
+        const container = document.getElementById("display-products");
+    
+        // Loop through each product and create HTML structure
+        products.forEach(product => {
+            const productDiv = document.createElement("div");
+    
+            const nameP = document.createElement("p");
+            nameP.textContent = `Name: ${product.name}`;
+    
+            const descP = document.createElement("p");
+            descP.textContent = `Description: ${product.description}`;
+    
+            const priceP = document.createElement("p");
+            priceP.textContent = `Price: $${product.price}`;
+    
+            const image = document.createElement("img");
+            image.src = product.imageURL;
+            image.alt = product.name;
+            image.style.maxWidth = "100%";
+    
+            const hr = document.createElement("hr");
+    
+            productDiv.appendChild(nameP);
+            productDiv.appendChild(descP);
+            productDiv.appendChild(priceP);
+            productDiv.appendChild(image);
+            productDiv.appendChild(hr);
+    
+            container.appendChild(productDiv);
+        });
     </script>
 </body>
 </html>
