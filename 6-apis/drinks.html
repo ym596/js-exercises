@@ -19,71 +19,81 @@
 
     <h2>Part 1</h2>
     <p>
-        Write JavaScript code to answer the questions below.
-        Log each of the answers to the console.
-
         <ol type="A">
             <li>Consult the API documentation to learn which URL to use to fetch information about non-alcoholic drinks.
                 Store the URL in a variable called <code>requestURL</code>.
-                <strong>HINT:</strong> ensure your URL begins with "http://" or "https://".
             </li>
             <li>Fetch the data using the specified URL.</li>
-            <li>Display the number of non-alcoholic drinks (i.e. 58).</li>
+            <li>Display the number of non-alcoholic drinks.</li>
             <li>Loop through the drinks, and display the name and unique identifier of each.</li>
         </ol>
     </p>
 
-
     <h2>Part 2</h2>
     <p>
-        Write JavaScript code to answer the questions below.
-        Display the answers on the page in the designated areas.
+        <ol type="A">
+            <li>Using the designated <code>span</code> element below, display the number of drinks.</li>
+            <li>Loop through the drinks, and display the name and image for each.
+                Create a new child <code>div</code> element for each drink.
+                The child <code>div</code> element should contain a <code>p</code> tag (for the name)
+                and an <code>img</code> tag (image height = 100px).
+            </li>
+        </ol>
     </p>
-
-    <ol type="A">
-        <li>Using the designated <code>span</code> element below, display the number of drinks (i.e. 58).</li>
-        <li>Loop through the drinks, and display the name and image for each.
-            Using the provided <code>div</code> element below,
-            create a new child <code>div</code> element for each drink.
-            The child <code>div</code> element should contain a <code>p</code> tag to display the drink name,
-            and an <code>img</code> tag to display the image (using an image height of 100px).
-        </li>
-
-    </ol>
 
     <hr>
     <h2>Display</h2>
 
     <p>Drinks: <span id="display-drinks-count">TODO</span></p>
-    <div id="display-drinks">
-    </div>
-
-
-
+    <div id="display-drinks"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script type="text/javascript">
 
-        var requestUrl = "TODO"
+        var requestUrl = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Non_Alcoholic";
 
         d3.json(requestUrl).then(function(data){
-            console.log("DATA:", data)
+            console.log("DATA:", data);
 
+            var drinks = data.drinks;
 
-            console.log("---------------------")
-            console.log("PART 1...")
+            console.log("---------------------");
+            console.log("PART 1...");
 
+            // A. Number of drinks
+            console.log("Total Non-Alcoholic Drinks:", drinks.length);
 
+            // B. Loop through and log name + ID
+            drinks.forEach(function(drink){
+                console.log("Name:", drink.strDrink, "| ID:", drink.idDrink);
+            });
 
+            console.log("---------------------");
+            console.log("PART 2...");
 
+            // A. Display drink count in span
+            document.getElementById("display-drinks-count").textContent = drinks.length;
 
-            console.log("---------------------")
-            console.log("PART 2...")
+            // B. Loop through and display on page
+            var container = document.getElementById("display-drinks");
 
+            drinks.forEach(function(drink){
+                var drinkDiv = document.createElement("div");
 
+                var namePara = document.createElement("p");
+                namePara.textContent = drink.strDrink;
 
+                var image = document.createElement("img");
+                image.src = drink.strDrinkThumb;
+                image.alt = drink.strDrink;
+                image.height = 100;
 
-        })
+                drinkDiv.appendChild(namePara);
+                drinkDiv.appendChild(image);
+
+                container.appendChild(drinkDiv);
+            });
+        });
 
     </script>
 </body>
