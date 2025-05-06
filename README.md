@@ -5,13 +5,13 @@
 
 ## ✅ Units Completed
 
-The following units and exercises were completed as part of the JavaScript assignments:
+The following units and exercises were completed as part of the JavaScript assignment:
 
 - **Unit 1 to Unit 6** – Fully completed  
 - **Unit 3 Specific Exercises Completed:**
-  - Gradebook
-  - Products
-  - Rideshare
+  - gradebook
+  - products
+  - rideshare
 
 ## 🚫 Units Not Attempted
 
