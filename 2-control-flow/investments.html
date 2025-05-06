@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,37 +14,33 @@
         You decide to invest this money in the stock market.
         The average rate of return to expect from the stock market is around 8% per year.
     </p>
-    <p>
-        Under these conditions (assuming a constant return each year), how many years will it take your money to grow to $1M?
-        Answer in terms of full years (i.e. round up to the nearest full year, as necessary).
-        Log the original balance, the number of years, and the actual ending balance to the console.
-        Use the provided <code>formatUSD</code> function to format the currency values.
-
-        <strong>HINT:</strong> use a while loop and some basic math (shouldn't need any fancy financial formulae).
-    </p>
-
 
     <hr>
     <h2>Part 2</h2>
     <p>
-        See the prompt from Part 1, where we are determining how long it will take an investment to reach $1M.
-        Repeat the analysis, except instead of assuming a constant 8% return per year, this time use a simulated random return instead.
-        To simulate the return, use a normal distribution with mean of 8% and standard deviation of 15%.
-
-        <strong>HINT:</strong> see the <a href="https://d3js.org/d3-random#randomNormal"><code>d3.randomNormal()</code> function</a> provided by the <code>d3-random</code> library.
+        Repeat the analysis using random returns (mean = 8%, std dev = 15%).
     </p>
-    <p>In addition to logging the original balance, the number of years, and the actual ending balance to the console, the program should also log the specific random return rates used each year.
-</p>
 
     <hr>
     <h2>Part 3</h2>
-    <p>Create your own HTML interface that will allow the user to run their own simulation as described in Part 2.
-        The interface should allow the user to input values for the initial balance, desired ending balance, mean, and standard deviation.
-        The interface should include a button, that when clicked should perform the simulation and
-        and display the resulting number of years and actual ending balance on the page.
-    </p>
+    <p>Run your own simulation with custom input values below.</p>
 
+    <label>Initial Balance: </label>
+    <input id="input-initial" type="number" value="150000"><br>
 
+    <label>Target Balance: </label>
+    <input id="input-target" type="number" value="1000000"><br>
+
+    <label>Mean Return (%): </label>
+    <input id="input-mean" type="number" step="0.01" value="8"><br>
+
+    <label>Standard Deviation (%): </label>
+    <input id="input-stddev" type="number" step="0.01" value="15"><br>
+
+    <button id="simulate">Run Simulation</button>
+
+    <p><strong>Result:</strong></p>
+    <p id="output-result">Waiting for input...</p>
 
     <script src="https://cdn.jsdelivr.net/npm/d3-random@3"></script>
     <script type="text/javascript">
@@ -58,24 +52,73 @@
         console.log("---------------------")
         console.log("PART 1...")
 
+        let balance1 = 150000;
+        const target1 = 1000000;
+        const rate = 0.08;
+        let years1 = 0;
 
+        while (balance1 < target1) {
+            balance1 *= (1 + rate);
+            years1++;
+        }
 
-
-
+        console.log("Original Balance:", formatUSD(150000));
+        console.log("Years Needed:", years1);
+        console.log("Ending Balance:", formatUSD(balance1));
 
         console.log("---------------------")
         console.log("PART 2...")
 
+        let balance2 = 150000;
+        const target2 = 1000000;
+        const meanReturn = 0.08;
+        const stdDevReturn = 0.15;
+        const randomNormal = d3.randomNormal(meanReturn, stdDevReturn);
+        let years2 = 0;
+        let returnsUsed = [];
 
+        while (balance2 < target2) {
+            let randomRate = randomNormal();
+            returnsUsed.push(randomRate);
+            balance2 *= (1 + randomRate);
+            years2++;
+        }
 
-
-
+        console.log("Original Balance:", formatUSD(150000));
+        console.log("Years Needed:", years2);
+        console.log("Ending Balance:", formatUSD(balance2));
+        console.log("Returns Used Each Year:", returnsUsed.map(r => `${(r * 100).toFixed(2)}%`).join(", "));
 
         console.log("---------------------")
         console.log("PART 3...")
 
+        document.getElementById("simulate").addEventListener("click", function () {
+            const initial = parseFloat(document.getElementById("input-initial").value);
+            const target = parseFloat(document.getElementById("input-target").value);
+            const mean = parseFloat(document.getElementById("input-mean").value) / 100;
+            const stddev = parseFloat(document.getElementById("input-stddev").value) / 100;
 
+            let balance = initial;
+            let years = 0;
+            const randomGen = d3.randomNormal(mean, stddev);
+            let returns = [];
 
+            while (balance < target) {
+                const r = randomGen();
+                returns.push(r);
+                balance *= (1 + r);
+                years++;
+            }
+
+            const resultText = `
+                Starting with ${formatUSD(initial)}, it will take <strong>${years}</strong> years 
+                to reach at least ${formatUSD(target)}. 
+                <br>Final Balance: ${formatUSD(balance)}.
+                <br>Yearly Returns: ${returns.map(r => `${(r * 100).toFixed(2)}%`).join(", ")}
+            `;
+
+            document.getElementById("output-result").innerHTML = resultText;
+        });
 
     </script>
 </body>
