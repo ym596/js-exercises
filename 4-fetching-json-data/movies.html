@@ -32,7 +32,6 @@
         </ol>
     </p>
 
-
     <h2>Part 2</h2>
     <p>
         Write JavaScript code to answer the questions below.
@@ -54,7 +53,6 @@
             it will invoke the <code>updateMovieInfo</code> function.
             As a result, you should be able to select different movies from the dropdown to see the corresponding info on the page.
         </li>
-
     </ol>
 
     <hr>
@@ -71,36 +69,72 @@
         <div id="image-container"></div>
     </div>
 
-
-
     <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
     <script type="text/javascript">
-
-        var requestUrl = "https://raw.githubusercontent.com/prof-rossetti/internet-technologies/refs/heads/main/data/hp-movies.json"
-
+var requestUrl = "https://raw.githubusercontent.com/prof-rossetti/internet-technologies/main/data/hp-movies.json"
         fetch(requestUrl).then(response => response.json())
             .then(function(data){
                 console.log("DATA", data)
 
-
                 console.log("---------------------")
-                console.log("PART 1...")
+console.log("PART 1...")
 
+// A. Already fetched
+// B. Display the number of movies
+console.log("Number of movies:", data.length)
 
+// C. Display title and year of each
+data.forEach(movie => {
+    console.log(`${movie.Title} (${movie.Year})`)
+})
 
+// D. Highest-rated movie
+const topRatedMovie = data.reduce((max, movie) =>
+    movie.Rating > max.Rating ? movie : max, data[0]
+)
+console.log(`Highest rated movie: ${topRatedMovie.Title} (${topRatedMovie.Rating}/10)`)
 
+console.log("---------------------")
+console.log("PART 2...")
 
+// DOM references
+const selectMenu = document.getElementById("select-movie")
+const displayTitle = document.getElementById("display-title")
+const displayYear = document.getElementById("display-year")
+const displayRating = document.getElementById("display-rating")
+const imageContainer = document.getElementById("image-container")
 
-                console.log("---------------------")
-                console.log("PART 2...")
+// A. Populate dropdown
+data.forEach(movie => {
+    const option = document.createElement("option")
+    option.value = movie.Id
+    option.textContent = movie.Title
+    selectMenu.appendChild(option)
+})
 
+// B. Update display
+function updateMovieInfo() {
+    const selectedId = selectMenu.value
+    const movie = data.find(m => m.Id === selectedId)
 
+    if (movie) {
+        displayTitle.textContent = movie.Title
+        displayYear.textContent = movie.Year
+        displayRating.textContent = movie.Rating
 
+        imageContainer.innerHTML = ""
+        const img = document.createElement("img")
+        img.src = movie["Thumbnail Image URL"]
+        img.alt = `${movie.Title} Poster`
+        img.style.maxWidth = "200px"
+        imageContainer.appendChild(img)
+    }
+}
 
-
+// C. Attach event listener
+selectMenu.addEventListener("change", updateMovieInfo)
             })
-            .catch(err => console.log(err))
-
+            .catch(err => console.log("Error loading data:", err))
     </script>
 </body>
 </html>
