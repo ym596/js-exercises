@@ -78,30 +78,88 @@
 
     <script type="text/javascript">
 
-        var degreeSymbol = "\u00B0"
-
-        var requestUrl = "https://raw.githubusercontent.com/prof-rossetti/internet-technologies/refs/heads/main/data/weather-data.json"
-
+        var degreeSymbol = "\u00B0";
+        var requestUrl = "https://raw.githubusercontent.com/prof-rossetti/internet-technologies/refs/heads/main/data/weather-data.json";
+    
         fetch(requestUrl).then(response => response.json())
             .then(function(data){
-                console.log("DATA", data)
-
-
-                console.log("---------------------")
-                console.log("PART 1...")
-
-
-
-
-                console.log("---------------------")
-                console.log("PART 2...")
-
-
-
-
+                console.log("DATA", data);
+    
+                const generatedDate = data.properties.generatedAt.split("T")[0];
+                const periods = data.properties.periods;
+                const daytimePeriods = periods.filter(period => period.isDaytime);
+    
+                console.log("---------------------");
+                console.log("PART 1...");
+    
+                // A. Display generated date
+                console.log("Generated Date:", generatedDate);
+    
+                // B. Number of total periods
+                console.log("Number of Periods:", periods.length);
+    
+                // C. Daytime periods filtered
+                console.log("Daytime Periods:", daytimePeriods);
+    
+                // D. Number of daytime periods
+                console.log("Number of Daytime Periods:", daytimePeriods.length);
+    
+                // E. Forecast info for each daytime period
+                daytimePeriods.forEach(period => {
+                    console.log(`${period.name}: ${period.temperature}${degreeSymbol}${period.temperatureUnit} - ${period.shortForecast || period.detailedForecast}`);
+                });
+    
+                console.log("---------------------");
+                console.log("PART 2...");
+    
+                // A. Display date in span
+                document.getElementById("display-date").innerText = generatedDate;
+    
+                // B. Display table rows for each daytime period
+                const table = document.getElementById("display-forecast");
+    
+                // Create header row
+                const headerRow = document.createElement("tr");
+                ["Period", "Temperature", "Forecast", "Icon"].forEach(header => {
+                    const th = document.createElement("th");
+                    th.innerText = header;
+                    headerRow.appendChild(th);
+                });
+                table.appendChild(headerRow);
+    
+                // Create rows for each daytime forecast
+                daytimePeriods.forEach(period => {
+                    const row = document.createElement("tr");
+    
+                    // Period name
+                    const periodCell = document.createElement("td");
+                    periodCell.innerText = period.name;
+                    row.appendChild(periodCell);
+    
+                    // Temperature
+                    const tempCell = document.createElement("td");
+                    tempCell.innerText = `${period.temperature}${degreeSymbol}${period.temperatureUnit}`;
+                    row.appendChild(tempCell);
+    
+                    // Forecast
+                    const forecastCell = document.createElement("td");
+                    forecastCell.innerText = period.shortForecast || period.detailedForecast;
+                    row.appendChild(forecastCell);
+    
+                    // Icon
+                    const iconCell = document.createElement("td");
+                    const img = document.createElement("img");
+                    img.src = period.icon;
+                    img.alt = "weather icon";
+                    img.style.height = "40px";
+                    iconCell.appendChild(img);
+                    row.appendChild(iconCell);
+    
+                    table.appendChild(row);
+                });
             })
-            .catch(err => console.log(err))
-
+            .catch(err => console.log("Fetch error:", err));
+    
     </script>
 </body>
 </html>
