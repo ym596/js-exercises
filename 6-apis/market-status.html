@@ -35,7 +35,6 @@
         </ol>
     </p>
 
-
     <h2>Part 2</h2>
     <p>
         Write JavaScript code to answer the questions below.
@@ -52,10 +51,6 @@
     <hr>
     <h2>Display</h2>
 
-    <!--select name="region" id="select-region">
-        <option value="N/A">Select an Equity Market Region</option>
-    </select-->
-
     <div id="display-market-info">
         <p>Region: <span id="display-region">TODO</span></p>
         <p>Market Type: <span id="display-type">TODO</span></p>
@@ -65,25 +60,16 @@
         <p>Current Status: <span id="display-status">TODO</span></p>
     </div>
 
-
-
-
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script type="text/javascript">
 
         // AVOID HARD-CODING THE CREDENTIALS
         // USE SESSION STORAGE TO MINIMIZE THE NUMBER OF TIMES WE HAVE TO PROVIDE THE CREDENTIAL
-        // check session storage for the API Key:
         var apiKey = sessionStorage.getItem("ALPHAVANTAGE_API_KEY")
         if (!apiKey) {
-            // if it isn't there, ask the user to supply it:
             apiKey = prompt("Please enter your AlphaVantage API key:")
-            // store it in the session for later (so it will persist after refreshing the page)
             sessionStorage.setItem("ALPHAVANTAGE_API_KEY", apiKey)
         }
-
-
-
 
         var requestUrl = `https://www.alphavantage.co/query?function=MARKET_STATUS&apikey=${apiKey}`
         d3.json(requestUrl).then(function(data) {
@@ -92,21 +78,53 @@
             console.log("---------------------")
             console.log("PART 1...")
 
+            // A: Fetch market status data (already done)
+            const markets = data.markets;
 
+            // B: Display number of markets
+            console.log("Number of markets:", markets.length);
 
+            // C: Filter equity markets
+            const equityMarkets = markets.filter(m => m.market_type === "Equity");
 
+            // D: Display number of equity markets
+            console.log("Number of equity markets:", equityMarkets.length);
+
+            // E: Loop and display market type and region
+            equityMarkets.forEach(market => {
+                console.log(`Market Type: ${market.market_type}, Region: ${market.region}`);
+            });
+
+            // F: Find US equity market
+            const market = equityMarkets.find(m => m.region === "United States");
+
+            // G: Display US market info
+            if (market) {
+                console.log("US Market Info:");
+                console.log("Market Type:", market.market_type);
+                console.log("Primary Exchanges:", market.primary_exchanges);
+                console.log("Local Open:", market.local_open);
+                console.log("Local Close:", market.local_close);
+                console.log("Current Status:", market.current_status.toUpperCase());
+            } else {
+                console.warn("US market not found!");
+            }
 
             console.log("---------------------")
             console.log("PART 2...")
 
-
-
+            // Part 2: Display in DOM
+            if (market) {
+                document.getElementById("display-region").textContent = market.region;
+                document.getElementById("display-type").textContent = market.market_type;
+                document.getElementById("display-exchanges").textContent = market.primary_exchanges;                document.getElementById("display-open").textContent = market.local_open;
+                document.getElementById("display-close").textContent = market.local_close;
+                document.getElementById("display-status").textContent = market.current_status.toUpperCase();
+            }
 
         }).catch(function(error) {
             console.error("ERROR:", error)
         })
-
-
 
     </script>
 </body>
