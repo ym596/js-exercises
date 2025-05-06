@@ -46,22 +46,34 @@
     <label>Area:</label>
     <span id="display-area">TODO</span>
 
-
     <script type="text/javascript">
 
-        console.log("---------------------")
-        console.log("PART 1...")
+        // Part 1: Define the function
+        function calculateCircleArea(radius) {
+            return Math.PI * radius * radius;
+        }
+
+        // Invoke the function with radius 9
+        const radiusPart1 = 9;
+        const areaPart1 = calculateCircleArea(radiusPart1);
+
+        // Log radius and area to console
+        console.log(`Radius: ${radiusPart1}`);
+        console.log(`Area: ${areaPart1.toFixed(2)}`);
 
 
+        // Part 2: Handle button click to calculate area
+        document.getElementById("calculate").addEventListener("click", function() {
+            const radiusInput = document.getElementById("input-radius").value;
+            const radius = parseFloat(radiusInput);
 
-
-
-        console.log("---------------------")
-        console.log("PART 2...")
-
-
-
-
+            if (!isNaN(radius) && radius >= 0) {
+                const area = calculateCircleArea(radius);
+                document.getElementById("display-area").textContent = area.toFixed(2);
+            } else {
+                document.getElementById("display-area").textContent = "Invalid input";
+            }
+        });
 
     </script>
 </body>
