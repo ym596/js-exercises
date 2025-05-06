@@ -58,31 +58,39 @@
     <label>Fahrenheit Temperature:</label>
     <span id="display-temp-f">TODO</span>
 
-
     <script type="text/javascript">
-
         console.log("---------------------")
         console.log("PART 1...")
 
-
-
-
+        const tempC = -270;
+        const tempF = (tempC * 9/5) + 32;
+        console.log(`Celsius: ${tempC}°C`);
+        console.log(`Fahrenheit: ${tempF.toFixed(2)}°F`);
 
         console.log("---------------------")
         console.log("PART 2...")
 
+        function calculateTemp(tempC) {
+            return (tempC * 9/5) + 32;
+        }
 
-
-
-
+        const fahrenheit = calculateTemp(-270);
+        console.log(`Celsius: -270°C`);
+        console.log(`Fahrenheit (from function): ${fahrenheit.toFixed(2)}°F`);
 
         console.log("---------------------")
         console.log("PART 3...")
 
+        document.getElementById("calculate").addEventListener("click", function () {
+            const inputC = parseFloat(document.getElementById("input-temp-c").value);
 
-
-
-
+            if (!isNaN(inputC)) {
+                const convertedF = calculateTemp(inputC);
+                document.getElementById("display-temp-f").textContent = `${convertedF.toFixed(2)}°F`;
+            } else {
+                document.getElementById("display-temp-f").textContent = "Invalid input";
+            }
+        });
     </script>
 </body>
 </html>
