@@ -84,16 +84,52 @@
             ]
         }
 
-        console.log("---------------------")
-        console.log("PART 1...")
+console.log("---------------------")
+console.log("PART 1...")
 
+// A. Display driver's first name
+console.log(`Your driver is ${trip.driver.first_name}`);
 
+// B. Display license plate
+console.log(trip.vehicle.licensePlate);
 
+// C. Display number of stops
+console.log(trip.stops.length);
 
+// D. Display destination of first stop
+console.log(trip.stops[0].destination);
 
-        console.log("---------------------")
-        console.log("PART 2...")
+// E. Display destination of last stop (dynamic)
+console.log(trip.stops[trip.stops.length - 1].destination);
 
+// F. Loop through stops and display passenger names
+trip.stops.forEach(stop => console.log(stop.passenger));
+
+// G. Map fare values
+const fares = trip.stops.map(stop => stop.fare);
+console.log(fares);
+
+// H. Total fare formatted
+const totalFare = fares.reduce((acc, val) => acc + val, 0);
+console.log(`$${totalFare.toFixed(2)}`);
+
+console.log("---------------------")
+console.log("PART 2...")
+
+// A. Display driver’s first name in span
+document.getElementById("display-driver").textContent = trip.driver.first_name;
+
+// B. Display vehicle make, model, license plate in span
+const vehicle = trip.vehicle;
+document.getElementById("display-vehicle").textContent = `${vehicle.make} ${vehicle.model} (${vehicle.licensePlate})`;
+
+// C. List all passenger names in the ol element
+const passengerList = document.getElementById("display-passengers");
+trip.stops.forEach(stop => {
+    const li = document.createElement("li");
+    li.textContent = stop.passenger;
+    passengerList.appendChild(li);
+});
 
 
 
