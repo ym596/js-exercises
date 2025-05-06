@@ -41,43 +41,79 @@
 
 
 
-    <script src="https://d3js.org/d3-array.v2.min.js"></script>
-    <script type="text/javascript">
+<script src="https://d3js.org/d3-array.v2.min.js"></script>
+<script type="text/javascript">
 
-        var gradebook = {
-            "downloadDate": "2021-06-05",
-            "professorId": 123,
-            "students":[
-                {"studentId": 1, "name": "Student 1", "finalGrade": 76.7},
-                {"studentId": 2, "name": "Student 2", "finalGrade": 85.1},
-                {"studentId": 3, "name": "Student 3", "finalGrade": 50.3},
-                {"studentId": 4, "name": "Student 4", "finalGrade": 89.8},
-                {"studentId": 5, "name": "Student 5", "finalGrade": 97.4},
-                {"studentId": 6, "name": "Student 6", "finalGrade": 75.5},
-                {"studentId": 7, "name": "Student 7", "finalGrade": 87.2},
-                {"studentId": 8, "name": "Student 8", "finalGrade": 88.0},
-                {"studentId": 9, "name": "Student 9", "finalGrade": 93.9},
-                {"studentId": 10, "name": "Student 10", "finalGrade": 92.5}
-            ]
-        }
+    var gradebook = {
+        "downloadDate": "2021-06-05",
+        "professorId": 123,
+        "students": [
+    {"studentId": 1, "name": "Aarav Shah", "finalGrade": 76.7},
+    {"studentId": 2, "name": "Maya Patel", "finalGrade": 85.1},
+    {"studentId": 3, "name": "Liam Johnson", "finalGrade": 50.3},
+    {"studentId": 4, "name": "Zoe Kim", "finalGrade": 89.8},
+    {"studentId": 5, "name": "Noah Smith", "finalGrade": 97.4},
+    {"studentId": 6, "name": "Sara Ahmed", "finalGrade": 75.5},
+    {"studentId": 7, "name": "Elijah Brown", "finalGrade": 87.2},
+    {"studentId": 8, "name": "Chloe Nguyen", "finalGrade": 88.0},
+    {"studentId": 9, "name": "Ethan Garcia", "finalGrade": 93.9},
+    {"studentId": 10, "name": "Anaya Desai", "finalGrade": 92.5}
+]
+    }
 
-        console.log("---------------------")
-        console.log("PART 1...")
+    console.log("---------------------")
+    console.log("PART 1...")
 
+    // A. Display the date this data was downloaded
+    console.log("Download Date:", gradebook.downloadDate);
 
+    // B. Display the number of students
+    console.log("Number of Students:", gradebook.students.length);
 
+    // C. Loop through each student and display their name and grade
+    gradebook.students.forEach(student => {
+        console.log(`${student.name}: ${student.finalGrade}`);
+    });
 
+    // D. Create an array of just numeric grades
+    const grades = gradebook.students.map(student => student.finalGrade);
+    console.log("Grades:", grades);
 
+    // E. Calculate and display average grade using d3.mean
+    const avg = d3.mean(grades);
+    console.log("Average Grade:", avg.toFixed(2));
 
-        console.log("---------------------")
-        console.log("PART 2...")
+    // F. Calculate and display median grade using d3.median
+    const median = d3.median(grades);
+    console.log("Median Grade:", median.toFixed(2));
 
+    console.log("---------------------")
+    console.log("PART 2...")
 
+    // Create table rows
+    const table = document.getElementById("display-gradebook");
 
+    // Create header row
+    const headerRow = document.createElement("tr");
+    ["Student ID", "Student Name", "Final Grade"].forEach(headerText => {
+        const th = document.createElement("th");
+        th.textContent = headerText;
+        headerRow.appendChild(th);
+    });
+    table.appendChild(headerRow);
 
+    // Add student rows
+    gradebook.students.forEach(student => {
+        const row = document.createElement("tr");
+        [student.studentId, student.name, student.finalGrade].forEach(val => {
+            const td = document.createElement("td");
+            td.textContent = val;
+            row.appendChild(td);
+        });
+        table.appendChild(row);
+    });
 
-
-    </script>
+</script>
 
 </body>
 </html>
